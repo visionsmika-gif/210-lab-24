@@ -37,6 +37,12 @@ int main() {
     set<Goat> trip;             // Create an empty set of goats
     int choice = main_menu();   // Output a menu of choices and prompt the user for a choice
 
+    // test
+    for (int i = 0; i <= SZ_NAMES; ++i) {
+        cout << i << ": ";
+        add_goat(trip, names, colors);
+    }
+
     // Execute the user's choice, and continue prompting the user for a choice until they want to quit
     while (choice != 4) { // Choice 4: quit
         // Choice 1: add a goat
@@ -110,7 +116,16 @@ void add_goat(set<Goat>& trip, string names[], string colors[]) {
     string color = colors[rand() % SZ_COLORS];  // Randomly select a color from the array.
     int age = rand() % (MAX_AGE + 1);           // Randomly select an age between 0 and MAX_AGE (inclusive).
 
-    
+    // Ensure that a unique name is selected (since a set can only contain unique objects).
+    if (trip.size() == SZ_NAMES) {
+        cout << "Cannot add a new goat. All possible unqiue names have already been taken.\n";
+        return;
+    }
+    else {
+        while (trip.count(Goat(name)) == 1) {
+            name = names[rand() % SZ_NAMES];
+        }
+    }
 
     Goat newGoat(name, age, color);             // Create a new goat using the name, age, and color.
     trip.insert(newGoat);                       // Add the new goat to the trip using set's insert() function.
