@@ -7,7 +7,7 @@
 #include <iostream>
 #include <fstream>
 #include <iomanip>
-#include <list>
+#include <set>
 #include "Goat.h"
 #include <iterator>
 using namespace std;
@@ -15,10 +15,10 @@ using namespace std;
 const int SZ_NAMES = 200, SZ_COLORS = 25, MAX_AGE = 20;
 
 // Functions to manage the goats in the trip
-int select_goat(list<Goat> trip);
-void delete_goat(list<Goat> &trip);
-void add_goat(list<Goat> &trip, string [], string []);
-void display_trip(list<Goat> trip);
+int select_goat(set<Goat> trip);
+void delete_goat(set<Goat> &trip);
+void add_goat(set<Goat> &trip, string [], string []);
+void display_trip(set<Goat> trip);
 int main_menu();
 
 int main() {
@@ -37,7 +37,7 @@ int main() {
     while (fin1 >> colors[i++]);
     fin1.close();
 
-    list<Goat> trip;            // Create an empty list of goats
+    set<Goat> trip;            // Create an empty set of goats
     int choice = main_menu();   // Output a menu of choices and prompt the user for a choice
 
     // Execute the user's choice, and continue prompting the user for a choice until they want to quit
@@ -93,12 +93,12 @@ int main_menu() {
 // Function to allow the user to input an integer to select a goat to be deleted. It ensures that the user entered a valid integer for an existing goat.
 // Args:    a list of goats
 // Returns: the user's selection (an int)
-int select_goat(list<Goat> trip) {
-    int choice;
+int select_goat(set<Goat> trip) {
+    string choice;
 
     display_trip(trip);
 
-    cout << "Select a goat number to delete.\n";
+    cout << "Select a goat's name to delete.\n";
     cout << "Choice --> ";
 
     // Validate the user's choice
@@ -116,20 +116,20 @@ int select_goat(list<Goat> trip) {
 // Function to add a random goat to the list. It selects a random name, color, and age, and uses them to create a goat that is added to the list.
 // Args:    a list of goats, an array of names, an array of colors
 // Returns: void
-void add_goat(list<Goat>& trip, string names[], string colors[]) {
+void add_goat(set<Goat>& trip, string names[], string colors[]) {
     string name = names[rand() % SZ_NAMES];     // Randomly select a name from the array.
     string color = colors[rand() % SZ_COLORS];  // Randomly select a color from the array.
     int age = rand() % (MAX_AGE + 1);           // Randomly select an age between 0 and MAX_AGE (inclusive).
 
     Goat newGoat(name, age, color);             // Create a new goat using the name, age, and color.
-    trip.push_back(newGoat);                    // Add the new goat to the trip using list's push_back() function.
+    trip.insert(newGoat);                    // Add the new goat to the trip using set's insert() function.
     cout << "Successfully added a goat.\n";
 }
 
 // Function to delete a selected goat from the list.
 // Args:    a list of goats
 // Returns: void
-void delete_goat(list<Goat>& trip) {
+void delete_goat(set<Goat>& trip) {
     // Return if the list is empty.
     if (trip.empty()) {
         cout << "No goats are currently in the trip.\n";
@@ -137,12 +137,12 @@ void delete_goat(list<Goat>& trip) {
         return;
     }
 
-    int index = select_goat(trip);  // Ask the user what goat to delete.
+    string name = select_goat(trip);    // Ask the user what goat to delete.
 
-    auto it = trip.begin();         // Create an iterator at the beginning of the list.
-    advance(it, index - 1);         // Advance the iterator to the position where we want to delete a goat (1-based index).
+    auto it = trip.begin();             // Create an iterator at the beginning of the list.
+    advance(it, index - 1);             // Advance the iterator to the position where we want to delete a goat (1-based index).
 
-    trip.erase(it);                 // Delete the goat using the list's erase() function with the iterator.
+    trip.erase(it);                     // Delete the goat using the list's erase() function with the iterator.
 }
 
 // Function to display the list of goats.
