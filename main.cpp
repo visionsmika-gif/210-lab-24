@@ -15,7 +15,7 @@ using namespace std;
 const int SZ_NAMES = 200, SZ_COLORS = 25, MAX_AGE = 20;
 
 // Functions to manage the goats in the trip
-int select_goat(set<Goat> trip);
+string select_goat(set<Goat> trip);
 void delete_goat(set<Goat> &trip);
 void add_goat(set<Goat> &trip, string [], string []);
 void display_trip(set<Goat> trip);
@@ -93,7 +93,7 @@ int main_menu() {
 // Function to allow the user to input an integer to select a goat to be deleted. It ensures that the user entered a valid integer for an existing goat.
 // Args:    a list of goats
 // Returns: the user's selection (an int)
-int select_goat(set<Goat> trip) {
+string select_goat(set<Goat> trip) {
     string choice;
 
     display_trip(trip);
@@ -101,6 +101,7 @@ int select_goat(set<Goat> trip) {
     cout << "Select a goat's name to delete.\n";
     cout << "Choice --> ";
 
+    /*
     // Validate the user's choice
     do {
         cin >> choice;
@@ -108,7 +109,7 @@ int select_goat(set<Goat> trip) {
             cout << "Invalid number. Please enter one of the numbers from the list.\n";
             cout << "Choice --> ";
         }
-    } while (choice < 1 || choice > trip.size());
+    } while (choice < 1 || choice > trip.size());*/
 
     return choice;
 }
@@ -140,9 +141,18 @@ void delete_goat(set<Goat>& trip) {
     string name = select_goat(trip);    // Ask the user what goat to delete.
 
     auto it = trip.begin();             // Create an iterator at the beginning of the list.
-    advance(it, index - 1);             // Advance the iterator to the position where we want to delete a goat (1-based index).
 
-    trip.erase(it);                     // Delete the goat using the list's erase() function with the iterator.
+    while (it->get_name() != name) {
+        advance(it, 1);
+    }
+
+    if (it != trip.end()) {
+        trip.erase(it);                 // Delete the goat using the list's erase() function with the iterator.
+    }
+    else {
+        cout << "No goat has been found with the name " << name << ".\n";
+        cout << "No goats have been deleted.\n";
+    }
 }
 
 // Function to display the list of goats.
