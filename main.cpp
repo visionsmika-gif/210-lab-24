@@ -100,6 +100,7 @@ string select_goat(set<Goat> trip) {
 
     cout << "Select a goat's name to delete.\n";
     cout << "Choice --> ";
+    cin >> choice;
 
     /*
     // Validate the user's choice
@@ -123,7 +124,7 @@ void add_goat(set<Goat>& trip, string names[], string colors[]) {
     int age = rand() % (MAX_AGE + 1);           // Randomly select an age between 0 and MAX_AGE (inclusive).
 
     Goat newGoat(name, age, color);             // Create a new goat using the name, age, and color.
-    trip.insert(newGoat);                    // Add the new goat to the trip using set's insert() function.
+    trip.insert(newGoat);                       // Add the new goat to the trip using set's insert() function.
     cout << "Successfully added a goat.\n";
 }
 
@@ -138,27 +139,21 @@ void delete_goat(set<Goat>& trip) {
         return;
     }
 
-    string name = select_goat(trip);    // Ask the user what goat to delete.
+    string name = select_goat(trip);            // Ask the user what goat to delete.
 
-    auto it = trip.begin();             // Create an iterator at the beginning of the list.
-
-    while (it->get_name() != name) {
-        advance(it, 1);
-    }
-
-    if (it != trip.end()) {
-        trip.erase(it);                 // Delete the goat using the list's erase() function with the iterator.
-    }
-    else {
+    if (trip.count(Goat(name)) == 1) {
         cout << "No goat has been found with the name " << name << ".\n";
         cout << "No goats have been deleted.\n";
+        return;
     }
+    trip.erase(Goat(name));                     // Delete a goat by name. Only the name matters, because only the name is used for Goat comparisons.
+    cout << "Successfully deleted a goat.\n";
 }
 
 // Function to display the list of goats.
 // Args:    a list of goats
 // Returns: void
-void display_trip(list<Goat> trip) {
+void display_trip(set<Goat> trip) {
     // Return if the list is empty.
     if (trip.empty()) {
         cout << "No goats are currently in the trip.\n";
