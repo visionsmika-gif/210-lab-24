@@ -1,9 +1,6 @@
 // COMSC-210 | Lab 24 | Mika Aquino
 // IDE used: Visual Studio 2022
 
-
-// INSTRUCTIONS: Convert your Lab 23 to a std::set.
-
 #include <iostream>
 #include <fstream>
 #include <iomanip>
@@ -37,7 +34,7 @@ int main() {
     while (fin1 >> colors[i++]);
     fin1.close();
 
-    set<Goat> trip;            // Create an empty set of goats
+    set<Goat> trip;             // Create an empty set of goats
     int choice = main_menu();   // Output a menu of choices and prompt the user for a choice
 
     // Execute the user's choice, and continue prompting the user for a choice until they want to quit
@@ -46,7 +43,7 @@ int main() {
         if (choice == 1) {
             add_goat(trip, names, colors);
         }
-        // Choice 2: delete a goat
+        // Choice 2: delete a goat by name
         else if (choice == 2) {
             delete_goat(trip);
         }
@@ -102,16 +99,6 @@ string select_goat(set<Goat> trip) {
     cout << "Choice --> ";
     cin >> choice;
 
-    /*
-    // Validate the user's choice
-    do {
-        cin >> choice;
-        if (choice < 1 || choice > trip.size()) {
-            cout << "Invalid number. Please enter one of the numbers from the list.\n";
-            cout << "Choice --> ";
-        }
-    } while (choice < 1 || choice > trip.size());*/
-
     return choice;
 }
 
@@ -122,6 +109,8 @@ void add_goat(set<Goat>& trip, string names[], string colors[]) {
     string name = names[rand() % SZ_NAMES];     // Randomly select a name from the array.
     string color = colors[rand() % SZ_COLORS];  // Randomly select a color from the array.
     int age = rand() % (MAX_AGE + 1);           // Randomly select an age between 0 and MAX_AGE (inclusive).
+
+    
 
     Goat newGoat(name, age, color);             // Create a new goat using the name, age, and color.
     trip.insert(newGoat);                       // Add the new goat to the trip using set's insert() function.
@@ -141,8 +130,9 @@ void delete_goat(set<Goat>& trip) {
 
     string name = select_goat(trip);            // Ask the user what goat to delete.
 
-    if (trip.count(Goat(name)) == 1) {
-        cout << "No goat has been found with the name " << name << ".\n";
+    // If no goats with that name exist, delete nothing and return.
+    if (trip.count(Goat(name)) == 0) {
+        cout << "No goat with the name \"" << name << "\" has been found.\n";
         cout << "No goats have been deleted.\n";
         return;
     }
