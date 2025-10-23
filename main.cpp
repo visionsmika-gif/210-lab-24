@@ -37,12 +37,6 @@ int main() {
     set<Goat> trip;             // Create an empty set of goats
     int choice = main_menu();   // Output a menu of choices and prompt the user for a choice
 
-    // test
-    for (int i = 0; i <= SZ_NAMES; ++i) {
-        cout << i << ": ";
-        add_goat(trip, names, colors);
-    }
-
     // Execute the user's choice, and continue prompting the user for a choice until they want to quit
     while (choice != 4) { // Choice 4: quit
         // Choice 1: add a goat
